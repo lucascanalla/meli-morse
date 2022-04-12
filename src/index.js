@@ -6,7 +6,7 @@ var bodyParser = require('body-parser');
 // Crear el servidor de express
 const app = express();
 
-//Puertos
+//Puerto
 var port = process.env.PORT || 8080
 
 // Lectura y parseo del body
