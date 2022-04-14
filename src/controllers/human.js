@@ -1,44 +1,36 @@
 'use strict'
-var alphabet = require('../data/index')
+const {validateString, searchData} = require('../services')
 
-//function translate2human convert from MORSE to TEXT
-function translate2Human(req, res) {
-    var textToReturn = '';
-    //get all the morse characters using space like a separator and filter
-    var morseString = req.body.text.split(' ')
-    
-    for (let i = 0; i < morseString.length; i++) {
-        
-        //check if start with space, then add a space in a text
-        // if(morseString[i] === ''){
-        //     textToReturn += ' ';
-        // }else{   
-            try {
-                var [target] = alphabet.filter(data => data.morse === morseString[i])
-                textToReturn += target.character
-            } catch (error) {
-                return res.json({  
-                                    code: 400,
-                                    response: 'Error to translate #'+`${i}`+' character' 
-                                })
+async function translateMorse2Human(req, res) {
+    var validString = await validateString(req.body.text, 'morse')
+
+    if (validString) {
+        var textToReturn = '';
+        //Get all the morse characters using space like a separator and filter
+        var morseString = req.body.text.split(' ')
+        try {
+            for (let i = 0; i < morseString.length; i++) {
+                textToReturn += await searchData(morseString[i], 'morse', i, res)
             }
-        //}
-            
+            return res.json({  
+                code: 200,
+                response: textToReturn
+            })
+        } catch {} 
+    }else{
+        return res.json({  
+            code: 403,
+            response: 'Some character on string are forbidden' 
+        })
     }
-
-    return res.json({  
-                        code: 200,
-                        response: textToReturn
-                    })
-
 }
 
-function pruebas(req, res){
+function test(req, res){
 	res.status(200).send({
 		message:'probando el controlador'
 	});
 }
 
-module.exports = {translate2Human, pruebas};
+module.exports = {translateMorse2Human, test};
 
 

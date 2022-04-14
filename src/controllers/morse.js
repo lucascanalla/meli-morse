@@ -1,69 +1,71 @@
 'use strict'
-var alphabet = require('../data/index')
+const {validateString, searchData} = require('../services')
 
-function translateHuman2Morse(req, res) {
-    var morseToReturn = '';
-    var humanArray = Array.from(req.body.text);
-
-    for (let i = 0; i < humanArray.length; i++) {
+async function translateHuman2Morse(req, res) {
+    var validString = await validateString(req.body.text, 'human')
+    if (validString) {
+        var morseToReturn = '';
+        var humanArray = Array.from((req.body.text).toLowerCase());
         try {
-            var [target] = alphabet.filter(data => data.character === humanArray[i])
-            morseToReturn += target.morse + ' '
-        } catch (error) {
-            return res.json({  
-                                code: 400,
-                                response: 'Error to translate #'+`${i}`+' character' 
-                            })
-        }
-        
-    }
-
-    return res.json({ 
-        code: 200,
-        response: morseToReturn
-    })
-}
-
-function decodeBits2Morse(req, res) {
-    var morseToReturn = '';
-    var startIndex = 0;
-    var endIndex = 10;
-    var bitCount = 10;
-    var bitsArray = req.body.text;
-
-    while (startIndex < bitsArray.length) {
-        if (parseInt(bitsArray[startIndex]) === 1) {
-            var bitCode = bitsArray.substring(startIndex, endIndex);
-            endIndex = endIndex + bitCount
-            startIndex = startIndex + bitCount
-                // console.log("bitCode");
-                // console.log(bitCode);
-                // console.log("startIndex");
-                // console.log(startIndex);
-                // console.log("endIndex");
-                // console.log(endIndex);
-            try {
-                var [target] = alphabet.filter(data => data.binary === bitCode)
-                morseToReturn += target.character + ' '
-            } catch (error) {
-                return res.json({  
-                                    code: 400,
-                                    response: 'Error to translate #'+`${startIndex}`+' character' 
-                                })
+            
+            for (let i = 0; i < humanArray.length; i++) {
+                morseToReturn += await searchData(humanArray[i], 'human', i, res);
             }
-        }else{
-            startIndex++;
-            endIndex++;
-        }
-        
+            
+            return res.json({ 
+                code: 200,
+                response: morseToReturn
+            })
+        } catch  {}
+    }else{
+        return res.json({  
+            code: 403,
+            response: 'Some character on string are forbidden' 
+        })
     }
-
-    return res.json({ 
-        code: 200,
-        response: morseToReturn
-    })
-
 }
+
+async function decodeBits2Morse(req, res) {
+    var validString = await validateString(req.body.text, 'bits');
+    if (validString) {
+        var morseToReturn = '';
+        var startIndex = 0;
+        var endIndex = 10;
+        //Binary digits 
+        const bitCount = 10;
+        var bitString = req.body.text;
+
+        try {
+            while (startIndex < bitString.length) {
+                //All the binary code in alphabet starts with 1.
+                //Then get the bitCode using the startIndex and endIndex for match in alphabet   
+                if (parseInt(bitString[startIndex]) === 1) {
+
+                var bitCode = bitString.substring(startIndex, endIndex);          
+                morseToReturn += await searchData(bitCode, 'bits', startIndex, res);
+                startIndex = startIndex + bitCount
+                endIndex = endIndex + bitCount
+                
+                }else{
+                    //If not should be a user delay. 
+                    startIndex++;
+                    endIndex++;
+                }
+                
+            }
+            return res.json({ 
+                code: 200,
+                response: morseToReturn
+            })
+        } catch  {}
+    }else{
+        return res.json({  
+            code: 403,
+            response: 'Some character on string are forbidden' 
+        })
+    }
+}
+
 module.exports = {
     translateHuman2Morse,
     decodeBits2Morse

@@ -1,3 +1,5 @@
+
+
 module.exports = [
     {
         'character': "a",
@@ -17,7 +19,7 @@ module.exports = [
     {
         'character': "d",
         'morse': "-..",
-        'binary': "1100000011"
+        'binary': "110000001"
     },
     {
         'character': "e",
