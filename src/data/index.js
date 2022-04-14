@@ -78,8 +78,8 @@ module.exports = [
     },
     {
         'character': "p",
-        'morse': ".--.",
-        'binary': "1011000100"
+        'morse': ".-.-",
+        'binary': "1010100100"
     },
     {
         'character': "q",

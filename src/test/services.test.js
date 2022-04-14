@@ -46,37 +46,20 @@ describe("Pruebas unitarias en function SearchData", ()=>{
             var resp = await searchData(boolString, 'bits', 1, res);
             expect(resp).toBe(`..-. `);
         });
-        // test('Se envia un Boolean String que no existe en el alfabeto, Retorna Error 404', async ()=>{
-        //     var boolString = "1101100111";
-        //     var resp = await searchData(boolString, 'bits', 1, res);
-        //     expect(resp.code).toBe(404);
-        // });
     });
-
     describe("con parametro 'morse'", ()=>{
         test("Se envia un Morse String que pertenece al alfabeto, Retorna 'l' ", async ()=>{
             var morseString = ".-.."
             var resp = await searchData(morseString, 'morse', 1, res);
             expect(resp).toBe(`l`);
         });
-        // test('Se envia un Morse String que no existe en el alfabeto, Retorna Error 404', async ()=>{
-        //     var morseString = "1101100111";
-        //     var resp = await searchData(morseString, 'morse', 1, res);
-        //     expect(resp.code).toBe(404);
-        // });
     });
-
     describe("con parametro 'human'", ()=>{
         test("Se envia un Caracter que pertenece al alfabeto, Retorna '..-. ' ", async ()=>{
             var caracterString = "f"
             var resp = await searchData(caracterString, 'human', 1, res);
             expect(resp).toBe(`..-. `);
         });
-        // test('Se envia un Caracter que no existe en el alfabeto, Retorna Error 404', async ()=>{
-        //     var caracterString = "=";
-        //     var resp = await searchData(caracterString, 'human', 1 , res);
-        //     expect(resp.code).toBe(404);
-        // });
     });
 
 })
