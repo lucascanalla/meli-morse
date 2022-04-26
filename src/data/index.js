@@ -184,7 +184,7 @@ module.exports = [
     {
         'character': " ",
         'morse': "",
-        'binary': "10000000000"
+        'binary': "1000000111"
     },
     {
         'character': "EOF",
