@@ -3,17 +3,17 @@ const alphabet = require('../data')
 async function validateString(str, from) {
     switch (from) {
         case 'human':
-            var regHuman = /^[a-z 0-9 \s]+$/gi
-            var resp = regHuman.test(str)
-            return resp
+            let regHuman = /^[a-z 0-9 \s]+$/gi
+            let respHuman = regHuman.test(str)
+            return respHuman
         case 'bits':
-            var regBoolean = /^[0-1]+$/gi
-            var resp = regBoolean.test(str)
-            return resp
+            let regBoolean = /^[0-1]+$/gi
+            let respBoolean = regBoolean.test(str)
+            return respBoolean
         case 'morse':
-            var regMorse = /^[\s -.]+$/g
-            var resp = regMorse.test(str)
-            return resp
+            let regMorse = /^[\s -.]+$/g
+            let respMorse = regMorse.test(str)
+            return respMorse
     }  
 }
 
@@ -21,7 +21,7 @@ async function searchData(filter, from, index, res){
     switch (from) {
         case 'morse': 
             try {
-                var [target] = alphabet.filter(data => data.morse === filter)
+                let [target] = alphabet.filter(data => data.morse === filter)
                 return (target.character)
             } catch (error) {
                 return res.send ({  
@@ -31,7 +31,7 @@ async function searchData(filter, from, index, res){
             }
         case 'human':
             try {
-                var [target] = alphabet.filter(data => data.character === filter)
+                let [target] = alphabet.filter(data => data.character === filter)
                 return (target.morse + ' ')
             } catch (error) {
                 return res.send ({  
@@ -41,7 +41,7 @@ async function searchData(filter, from, index, res){
             }
         case 'bits': 
             try {
-                var [target] = alphabet.filter(data => data.binary === filter)
+                let [target] = alphabet.filter(data => data.binary === filter)
                 return (target.morse + ' ')
             } catch {
                 return res.send ({  

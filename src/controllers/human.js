@@ -3,12 +3,12 @@ const {validateString, searchData} = require('../services')
 
 async function translateMorse2Human(req, res) {
     //Validate with RegExp if the request is compatible
-    var validString = await validateString(req.body.text, 'morse')
+    let validString = await validateString(req.body.text, 'morse')
 
     if (validString) {
-        var textToReturn = '';
+        let textToReturn = '';
         //Get all the morse characters using space like a separator and filter
-        var morseString = req.body.text.split(' ')
+        let morseString = req.body.text.split(' ')
         try {
             for (let i = 0; i < morseString.length; i++) {
                 //For every morse character, try to get the human character and add to textToReturn

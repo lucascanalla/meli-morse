@@ -3,12 +3,12 @@ const {validateString, searchData} = require('../services')
 
 async function translateHuman2Morse(req, res) {
     //Validate with RegExp if the request is compatible
-    var validString = await validateString(req.body.text, 'human')
+    let validString = await validateString(req.body.text, 'human')
     
     if (validString) {
-        var morseToReturn = '';
+        let morseToReturn = '';
         //Convert character String in Array for iteration. Also convert to lower case
-        var humanArray = Array.from((req.body.text).toLowerCase());
+        let humanArray = Array.from((req.body.text).toLowerCase());
         try {
             for (let i = 0; i < humanArray.length; i++) {
                 //For every human character, try to get the morse character and add to morseToReturn
@@ -32,15 +32,15 @@ async function translateHuman2Morse(req, res) {
 
 async function decodeBits2Morse(req, res) {
     //Validate with RegExp if the request is compatible
-    var validString = await validateString(req.body.text, 'bits');
+    let validString = await validateString(req.body.text, 'bits');
     
     if (validString) {
-        var morseToReturn = '';
-        var startIndex = 0;
-        var endIndex = 10;
+        let morseToReturn = '';
+        let startIndex = 0;
+        let endIndex = 10;
         //Binary quantity of digits 
         const bitCount = 10;
-        var bitString = req.body.text;
+        let bitString = req.body.text;
 
         try {
             while (startIndex < bitString.length) {
@@ -48,7 +48,7 @@ async function decodeBits2Morse(req, res) {
                 //Then get the bitCode using the startIndex and endIndex for match in alphabet   
                 if (parseInt(bitString[startIndex]) === 1) {
                     
-                    var bitCode = bitString.substring(startIndex, endIndex);
+                    let bitCode = bitString.substring(startIndex, endIndex);
                     //For every Bit sequence, try to get the morse character and add to morseToReturn
                     morseToReturn += await searchData(bitCode, 'bits', startIndex, res);
                     startIndex = startIndex + bitCount
